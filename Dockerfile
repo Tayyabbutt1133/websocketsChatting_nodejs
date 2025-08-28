@@ -1,16 +1,17 @@
-# Setup Node
-FROM node:18-alpine as build
+FROM node:18-alpine
 
-# Dependency and Build
+# Create app directory
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
 
+# Install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy source
 COPY . .
 
-# Create JS Build
-# RUN npm run build
+# Cloud Run requires port 8080
+EXPOSE 8080
 
-EXPOSE 3000
-
+# Start app
 CMD ["node", "server.js"]
